@@ -1,19 +1,37 @@
 import express from "express";
 import dotenv from "dotenv";
-// Import the database connection function
+import cookieParser from "cookie-parser";
+
 import { connectDB } from "./db/dataBase.js";
+import routeSeeder from "./seeder.js";
+import { userRouter } from "./routes/userRoute.js";
+import { productRoute } from "./routes/product-Route.js";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Middleware
+app.use(express.json()); // This parses incoming JSON requests
+app.use(cookieParser());
+
+
 // Connect to the database
 connectDB();
 
-// Define a basic route
-app.get("/", (req, res) => {
-    res.send("Hello nodejs");
+// Define routes
+app.use('/api/seed', routeSeeder);
+app.use('/api/user', userRouter);
+app.use('/api/product/', productRoute);
+
+// Global error handler
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({
+        success: false,
+        message: "Something went wrong!",
+    });
 });
 
 // Start the server
