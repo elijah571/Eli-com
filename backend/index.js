@@ -6,6 +6,7 @@ import { connectDB } from "./db/dataBase.js";
 import routeSeeder from "./seeder.js";
 import { userRouter } from "./routes/userRoute.js";
 import { productRoute } from "./routes/product-Route.js";
+import { orderRoute } from "./routes/order-Route.js";
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ connectDB();
 app.use('/api/seed', routeSeeder);
 app.use('/api/user', userRouter);
 app.use('/api/product/', productRoute);
+app.use('/api/orders', orderRoute);
 
 // Global error handler
 app.use((err, req, res, next) => {
