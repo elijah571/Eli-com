@@ -5,7 +5,7 @@ import { auth } from "../middleware/authentication.js";
 
 export const orderRoute = express.Router();
 
-// Orders route
+// Create Order
 orderRoute.post(
   "/",
   auth,
@@ -14,38 +14,32 @@ orderRoute.post(
       orderItems,
       shippingAddress,
       paymentMethod,
-      paymentResult,
       taxPrice,
       shippingPrice,
       totalPrice,
-      price,
     } = req.body;
 
-    // Check if orderItems is present and not empty
     if (!orderItems || orderItems.length === 0) {
       res.status(400);
-      throw new Error("No order items");
+      throw new Error("No order items provided");
     }
 
-    // Create a new order
     const order = new Order({
       orderItems,
       shippingAddress,
       paymentMethod,
-      paymentResult,
       taxPrice,
       shippingPrice,
       totalPrice,
-      price,
       user: req.user._id,
     });
 
     const createdOrder = await order.save();
-
     res.status(201).json(createdOrder);
   })
 );
 
+// Mark as Paid
 orderRoute.put(
   "/:id/payment",
   auth,
@@ -53,22 +47,52 @@ orderRoute.put(
     const order = await Order.findById(req.params.id);
 
     if (order) {
-      // Update payment fields
+      if (order.isPaid) {
+        res.status(400);
+        throw new Error("Order is already paid");
+      }
+
       order.isPaid = true;
       order.paidAt = Date.now();
-
       order.paymentResult = {
-        id: req.body.id || "default-id", // Replace with actual payment ID
-        status: req.body.status || "Paid", // Replace with actual payment status
-        updated_time: req.body.updated_time || new Date().toISOString(),
+        id: req.body.id,
+        status: req.body.status,
+        updated_time: req.body.updated_time,
         email_address: req.body.email_address,
       };
 
-      // Save the updated order
       const updatedOrder = await order.save();
-
-      // Respond with updated order
       res.status(200).json(updatedOrder);
+    } else {
+      res.status(404);
+      throw new Error("Order not found");
+    }
+  })
+);
+
+// Fetch All Orders
+orderRoute.get(
+  "/",
+  auth,
+  asyncHandler(async (req, res) => {
+    const orders = await Order.find({ user: req.user._id }).sort({ _id: -1 });
+    if (orders.length > 0) {
+      res.status(200).json(orders);
+    } else {
+      res.status(404);
+      throw new Error("No orders found");
+    }
+  })
+);
+
+// Fetch Single Order
+orderRoute.get(
+  "/:id",
+  auth,
+  asyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id).populate("user", "email");
+    if (order) {
+      res.status(200).json(order);
     } else {
       res.status(404);
       throw new Error("Order not found");
