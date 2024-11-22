@@ -17,26 +17,25 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json()); // This parses incoming JSON requests
 app.use(cookieParser());
 
-
 // Connect to the database
 connectDB();
 
 // Define routes
-app.use('/api/seed', routeSeeder);
-app.use('/api/user', userRouter);
-app.use('/api/product/', productRoute);
-app.use('/api/orders', orderRoute);
+app.use("/api/seed", routeSeeder);
+app.use("/api/user", userRouter);
+app.use("/api", productRoute);
+app.use("/api/orders", orderRoute);
 
 // Global error handler
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({
-        success: false,
-        message: "Something went wrong!",
-    });
+  console.error(err.stack);
+  res.status(500).json({
+    success: false,
+    message: "Something went wrong!",
+  });
 });
 
 // Start the server
 app.listen(PORT, () => {
-    console.log(`Server running on port: ${PORT}`);
+  console.log(`Server running on port: ${PORT}`);
 });
