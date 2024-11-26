@@ -1,12 +1,12 @@
-import Home from "../Components/Home/Home";
+import Layout from "../Components/Layout";
 import Item from "../Components/Products/Item";
 
-const productInfo = () => {
+const ProductInfo = () => {
   return (
-    <>
-      <Home>{<Item />}</Home>
-    </>
+    <Layout>
+      <Item />
+    </Layout>
   );
 };
 
-export default productInfo;
+export default ProductInfo;

@@ -1,27 +1,16 @@
-import { combineReducers, createStore, applyMiddleware } from "redux";
-import storage from "redux-persist/lib/storage";
-import { persistStore, persistReducer } from "redux-persist";
-import { productReducer, productsReducer } from "./Reducers/Products";
-import thunk from "redux-thunk"; // Middleware for async actions
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import { thunk } from "redux-thunk";
+import { productsReducer, productReducer } from "./Reducers/Products";
+import authReducer from "./Reducers/user";
 
-// Persist configuration
-const persistConfig = {
-  key: "root",
-  storage,
-  version: 1,
-};
-
-// Combine reducers
 const rootReducer = combineReducers({
-  products: productsReducer, // Key represents state slice
-  product: productReducer,
+  products: productsReducer,
+  productDetails: productReducer,
+  auth: authReducer, // Combined user reducer
 });
 
-// Wrap rootReducer with persistReducer
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const middleware = [thunk];
 
-// Create Redux store with middleware
-export const store = createStore(persistedReducer, applyMiddleware(thunk));
+const store = createStore(rootReducer, applyMiddleware(...middleware));
 
-// Persistor for persisting store
-export const persistor = persistStore(store);
+export default store;

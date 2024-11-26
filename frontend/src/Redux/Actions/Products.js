@@ -12,22 +12,27 @@ import {
 // Get all Products
 export const allProductsAction = () => async (dispatch) => {
   try {
-    // Dispatch the request action to start loading
-    dispatch({ type: Products_Req });
+    dispatch({ type: Products_Req }); // Dispatch request action
 
-    // Fetch products data from the API
     const { data } = await axios.get(`${baseURL}/api/products`);
 
-    // Dispatch success action with fetched data as payload
-    dispatch({ type: Products_Success, payload: data });
+    // Check if expected data exists in the response
+    if (data && data.products) {
+      dispatch({
+        type: Products_Success,
+        payload: {
+          products: data.products, // List of products
+          totalPage: data.totalPage || 1, // Default to 1 if not provided
+          page: data.page || 1, // Default to 1 if not provided
+        },
+      });
+    } else {
+      throw new Error("Unexpected response structure from the server.");
+    }
   } catch (error) {
-    // Dispatch fail action with the error message
     dispatch({
       type: Products_Fail,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: error.response?.data.message || error.message,
     });
   }
 };
@@ -35,22 +40,23 @@ export const allProductsAction = () => async (dispatch) => {
 // Get a single Product by ID
 export const productAction = (id) => async (dispatch) => {
   try {
-    // Dispatch the request action to start loading
-    dispatch({ type: Product_Details_Req });
+    dispatch({ type: Product_Details_Req }); // Dispatch request action
 
-    // Fetch product details for the specified ID
     const { data } = await axios.get(`${baseURL}/api/product/${id}`);
 
-    // Dispatch success action with fetched data as payload
-    dispatch({ type: Product_Details_Success, payload: data });
+    // Check if 'data' contains the expected product details
+    if (data && data.product) {
+      dispatch({
+        type: Product_Details_Success,
+        payload: data.product, // Pass only the product details
+      });
+    } else {
+      throw new Error("Product data is not available in the server response.");
+    }
   } catch (error) {
-    // Dispatch fail action with the error message
     dispatch({
       type: Product_Details_Fail,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: error.response?.data.message || error.message,
     });
   }
 };

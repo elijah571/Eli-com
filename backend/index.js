@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-
+import cors from "cors";
 import { connectDB } from "./db/dataBase.js";
 import routeSeeder from "./seeder.js";
 import { userRouter } from "./routes/userRoute.js";
@@ -12,7 +12,7 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
+app.use(cors());
 // Middleware
 app.use(express.json()); // This parses incoming JSON requests
 app.use(cookieParser());
