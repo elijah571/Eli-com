@@ -10,7 +10,7 @@ import ProductInfo from "./pages/productInfo";
 import Login from "./pages/Users/Login";
 import Signup from "./pages/Users/Signup";
 import { useSelector } from "react-redux";
-
+import Checkout from "./pages/Checkout";
 const App = () => {
   const auth = useSelector((state) => state.auth);
   const { userInfo } = auth;
@@ -28,6 +28,7 @@ const App = () => {
           path="/signup"
           element={userInfo ? <Navigate to="/" /> : <Signup />}
         />
+        <Route path="/checkout" element={<Checkout />} />
       </Routes>
     </Router>
   );
