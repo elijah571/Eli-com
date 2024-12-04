@@ -1,0 +1,14 @@
+// Example of a constants file
+export const ORDER_REQ = "ORDER_REQ";
+export const ORDER_RESET = "ORDER_RESET";
+export const ORDER_SUCCESS = "ORDER_SUCCESS";
+export const ORDER_FAIL = "ORDER_FAIL";
+export const ORDER_DETAIL_REQ = "ORDER_DETAIL_REQ";
+export const ORDER_DETAIL_SUCCESS = "ORDER_DETAIL_SUCCESS";
+export const ORDER_DETAIL_FAIL = "ORDER_DETAIL_FAIL";
+export const ORDER_PAYMENT_REQ = "ORDER_PAYMENT_REQ";
+export const ORDER_PAYMENT_SUCCESS = "ORDER_PAYMENT_SUCCESS";
+export const ORDER_PAYMENT_FAIL = "ORDER_PAYMENT_FAIL";
+export const ORDER_LIST_REQ = "ORDER_LIST_REQ";
+export const ORDER_LIST_SUCCESS = "ORDER_LIST_SUCCESS";
+export const ORDER_LIST_FAIL = "ORDER_LIST_FAIL";

@@ -26,6 +26,10 @@ app.use("/api/user", userRouter);
 app.use("/api", productRoute);
 app.use("/api/orders", orderRoute);
 
+//paypal
+app.use("/api/config/paypal", (req, res) => {
+  res.send(process.env.PAYPALCLIENTID);
+});
 // Global error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);

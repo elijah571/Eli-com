@@ -11,6 +11,7 @@ import Login from "./pages/Users/Login";
 import Signup from "./pages/Users/Signup";
 import { useSelector } from "react-redux";
 import Checkout from "./pages/Checkout";
+import Order from "./pages/Order";
 const App = () => {
   const auth = useSelector((state) => state.auth);
   const { userInfo } = auth;
@@ -29,6 +30,7 @@ const App = () => {
           element={userInfo ? <Navigate to="/" /> : <Signup />}
         />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/order" element={<Order />} />
       </Routes>
     </Router>
   );
