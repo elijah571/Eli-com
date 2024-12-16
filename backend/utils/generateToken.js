@@ -10,9 +10,9 @@ export const generateToken = asyncHandler(async (id, res) => {
   // Set the token in the cookie
   res.cookie("token", token, {
     httpOnly: true,
-    secure: false, // Allows HTTP access during development
-    maxAge: 24 * 60 * 60 * 1000,
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Ensures compatibility for both environments
+    secure: process.env.NODE_ENV === "production", // Set to true in production for HTTPS
+    maxAge: 24 * 60 * 60 * 1000, // 1 day
+    sameSite: 'strict',
   });
 
   return token;
