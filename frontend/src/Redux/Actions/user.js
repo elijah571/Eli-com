@@ -19,7 +19,7 @@ export const loginAction = (email, password) => async (dispatch) => {
 
     // Send login request to backend
     const { data } = await axios.post(
-      `${baseURL}/api/user/login`,
+      `${baseURL}/api/user/login`, // Base URL dynamically handled
       { email, password },
       config
     );
@@ -49,7 +49,7 @@ export const signupAction = (name, email, password) => async (dispatch) => {
 
     // Send signup request to backend
     const { data } = await axios.post(
-      `${baseURL}/api/user/signup`,
+      `${baseURL}/api/user/signup`, // Base URL dynamically handled
       { name, email, password },
       config
     );
